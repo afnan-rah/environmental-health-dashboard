@@ -28,6 +28,8 @@ __pycache__/
 outputs/*
 !outputs/.gitkeep
 
-# Processed data artifacts (regenerate from pipeline)
+# Processed data artifacts (default ignore; allow checked-in cleaned exports)
 data/processed/*
 !data/processed/.gitkeep
+!data/processed/arsenic_cleaned.csv
+!data/processed/mosquito_cleaned.csv
