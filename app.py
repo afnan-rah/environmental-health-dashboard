@@ -55,8 +55,8 @@ def main() -> None:
 
     st.divider()
     st.info(
-        "If maps look empty, confirm you ran the app from the repository root and that either a TIGER extract "
-        "(`data/geo/mi_counties_tiger2025.geojson`) or the fallback `data/geo/mi_counties.geojson` exists."
+        "The **home page** is text only. Open **Arsenic Explorer** or **Mosquito Surveillance** in the sidebar for maps and charts. "
+        "If a map panel is blank there, confirm `data/geo/mi_counties_tiger2025.geojson` or `data/geo/mi_counties.geojson` exists."
     )
 
 

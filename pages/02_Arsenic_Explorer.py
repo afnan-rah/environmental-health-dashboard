@@ -89,11 +89,18 @@ st.caption("Markers are color-coded by severity; counties can be shaded by ZIP-l
 show_cluster = st.toggle("Cluster markers (recommended for many points)", value=True)
 show_heat = st.toggle("Heat layer (result intensity)", value=False)
 
+mappable = filtered.dropna(subset=["map_latitude", "map_longitude"])
+if mappable.empty:
+    st.warning(
+        "No rows have map coordinates (missing ZIP match in `mi_zip_reference.csv`). "
+        "Charts above still work; fix ZIPs or rebuild the reference to see points."
+    )
+else:
     fmap = build_arsenic_folium_map(
         filtered,
         resolve_mi_counties_geojson(),
-    show_cluster=show_cluster,
-    show_heatmap=show_heat,
-    show_county_choropleth=True,
-)
-st_folium(fmap, use_container_width=True, height=650)
+        show_cluster=show_cluster,
+        show_heatmap=show_heat,
+        show_county_choropleth=True,
+    )
+    st_folium(fmap, use_container_width=True, height=650)
