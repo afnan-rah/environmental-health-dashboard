@@ -15,8 +15,10 @@ from src.analysis import arsenic_patterns as ap
 from src.utils.paths import resolve_mi_counties_geojson
 from src.visualization.folium_maps import build_arsenic_folium_map
 from streamlit_app.cached_loaders import get_arsenic_enriched
+from streamlit_app.ui_style import apply_dashboard_style
 
-pio.templates.default = "plotly_white"
+apply_dashboard_style()
+pio.templates.default = "plotly_dark"
 
 
 st.title("Arsenic Explorer")
@@ -73,15 +75,15 @@ st.markdown(
 
 left, right = st.columns(2)
 with left:
-    st.plotly_chart(ap.figure_arsenic_histogram(filtered), use_container_width=True)
+    st.plotly_chart(ap.figure_arsenic_histogram(filtered), width="stretch")
 with right:
-    st.plotly_chart(ap.figure_tests_per_year(filtered), use_container_width=True)
+    st.plotly_chart(ap.figure_tests_per_year(filtered), width="stretch")
 
 left, right = st.columns(2)
 with left:
-    st.plotly_chart(ap.figure_top_cities(filtered), use_container_width=True)
+    st.plotly_chart(ap.figure_top_cities(filtered), width="stretch")
 with right:
-    st.plotly_chart(ap.figure_county_elevated_rate(filtered), use_container_width=True)
+    st.plotly_chart(ap.figure_county_elevated_rate(filtered), width="stretch")
 
 st.subheader("Interactive map")
 st.caption("Markers are color-coded by severity; counties can be shaded by ZIP-linked elevated rate (where sample size allows).")

@@ -19,6 +19,8 @@ if str(ROOT) not in sys.path:
 
 import streamlit as st
 
+from streamlit_app.ui_style import apply_dashboard_style
+
 
 def main() -> None:
     st.set_page_config(
@@ -27,36 +29,59 @@ def main() -> None:
         layout="wide",
         initial_sidebar_state="expanded",
     )
+    apply_dashboard_style()
 
-    st.title("Environmental Health Intelligence Dashboard")
-    st.caption("Plain-language maps and charts for arsenic testing and mosquito surveillance.")
+    top, nav = st.columns([1.15, 1], vertical_alignment="top")
+    with top:
+        st.title("Environmental Health Intelligence")
+        st.caption("Maps, filters, and plain-language context for arsenic testing and mosquito surveillance.")
+    with nav:
+        st.markdown("**Open a workspace**")
+        a, b = st.columns(2)
+        with a:
+            st.page_link("pages/02_Arsenic_Explorer.py", label="Arsenic Explorer", icon="💧", use_container_width=True)
+            st.page_link("pages/04_Environmental_Insights.py", label="Environmental Insights", icon="✨", use_container_width=True)
+        with b:
+            st.page_link("pages/03_Mosquito_Surveillance.py", label="Mosquito Surveillance", icon="🦟", use_container_width=True)
+            st.page_link("pages/05_Methods_and_Limitations.py", label="Methods & limitations", icon="📋", use_container_width=True)
 
-    st.markdown(
-        """
-        ### Purpose
-        This workspace helps a **non-technical researcher** explore two complementary datasets:
-        private well arsenic tests and public-health mosquito surveillance. The goal is not “more charts,”
-        but **clear geography**, **simple filters**, and **short explanations** that stay close to the data.
+    st.divider()
 
-        ### What is inside
-        - **Arsenic Explorer:** distributions, yearly testing activity, filters, and an interactive map.
-        - **Mosquito Surveillance:** species mix, seasonality, detection outcomes, and a city-level map.
-        - **Environmental Insights:** cautious, plain-English takeaways that connect the two views.
-        - **Methods & Limitations:** where the numbers come from—and what they cannot prove.
+    with st.container(border=True):
+        st.markdown(
+            """
+            ### Purpose
+            This workspace helps a **non-technical researcher** explore two complementary datasets:
+            private well arsenic tests and public-health mosquito surveillance. The goal is not “more charts,”
+            but **clear geography**, **simple filters**, and **short explanations** that stay close to the data.
+            """
+        )
 
-        ### How to use this dashboard
-        1. Start with **Arsenic** or **Mosquito** depending on your question.
-        2. Use the **filters** to narrow time and place—broad views hide important local detail.
-        3. Read the **“How to interpret this”** boxes before sharing a chart externally.
-
-        **Tip:** Use the sidebar pages on the left to navigate.
-        """
-    )
+    c1, c2 = st.columns(2, gap="large")
+    with c1:
+        with st.container(border=True):
+            st.markdown("#### What is inside")
+            st.markdown(
+                """
+                - **Arsenic Explorer:** distributions, yearly testing activity, filters, and an interactive map.
+                - **Mosquito Surveillance:** species mix, seasonality, detection outcomes, and a city-level map.
+                """
+            )
+    with c2:
+        with st.container(border=True):
+            st.markdown("#### How to use this dashboard")
+            st.markdown(
+                """
+                1. Pick **Arsenic** or **Mosquito** from the cards above or the **sidebar**.
+                2. Use **filters** to narrow time and place.
+                3. Expand **“How to interpret this”** before sharing a chart externally.
+                """
+            )
 
     st.divider()
     st.info(
-        "The **home page** is text only. Open **Arsenic Explorer** or **Mosquito Surveillance** in the sidebar for maps and charts. "
-        "If a map panel is blank there, confirm `data/geo/mi_counties_tiger2025.geojson` or `data/geo/mi_counties.geojson` exists."
+        "The **home page** is an overview only. **Maps and charts** are on **Arsenic Explorer** and **Mosquito Surveillance**. "
+        "If a map is blank there, confirm `data/geo/mi_counties_tiger2025.geojson` or `data/geo/mi_counties.geojson` exists."
     )
 
 

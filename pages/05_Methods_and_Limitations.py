@@ -10,6 +10,9 @@ if str(ROOT) not in sys.path:
 import streamlit as st
 
 from streamlit_app.cached_loaders import get_arsenic, get_mosquito
+from streamlit_app.ui_style import apply_dashboard_style
+
+apply_dashboard_style()
 
 
 st.title("Methods & Limitations")
@@ -49,7 +52,7 @@ c1, c2 = st.columns(2)
 with c1:
     st.markdown("**Arsenic — percent of rows missing**")
     a_miss = (arsenic[["zip5", "result_mgl", "contamination_severity"]].isna().mean() * 100).round(1)
-    st.dataframe(a_miss.rename("missing_%").to_frame(), use_container_width=True)
+    st.dataframe(a_miss.rename("missing_%").to_frame(), width="stretch")
 with c2:
     st.markdown("**Mosquito — percent of rows missing**")
     m_miss = (
@@ -58,7 +61,7 @@ with c2:
         .mean()
         * 100
     ).round(1)
-    st.dataframe(m_miss.rename("missing_%").to_frame(), use_container_width=True)
+    st.dataframe(m_miss.rename("missing_%").to_frame(), width="stretch")
 
 st.info(
     "If you need reproducible downloads for Census TIGER/Line shapefiles, use official U.S. Census endpoints in your environment; "

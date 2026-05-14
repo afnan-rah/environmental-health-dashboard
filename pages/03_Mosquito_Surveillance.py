@@ -14,8 +14,10 @@ from streamlit_folium import st_folium
 from src.analysis import mosquito_patterns as mp
 from src.visualization.folium_maps import build_mosquito_folium_map
 from streamlit_app.cached_loaders import get_mosquito_enriched
+from streamlit_app.ui_style import apply_dashboard_style
 
-pio.templates.default = "plotly_white"
+apply_dashboard_style()
+pio.templates.default = "plotly_dark"
 
 
 st.title("Mosquito Surveillance")
@@ -69,17 +71,17 @@ m3.metric("Median adults / record", f"{filtered['total_adults_collected'].median
 
 left, right = st.columns(2)
 with left:
-    st.plotly_chart(mp.figure_species_counts(filtered), use_container_width=True)
+    st.plotly_chart(mp.figure_species_counts(filtered), width="stretch")
 with right:
-    st.plotly_chart(mp.figure_season_counts(filtered), use_container_width=True)
+    st.plotly_chart(mp.figure_season_counts(filtered), width="stretch")
 
-st.plotly_chart(mp.figure_detection_by_month(filtered), use_container_width=True)
+st.plotly_chart(mp.figure_detection_by_month(filtered), width="stretch")
 
 left, right = st.columns(2)
 with left:
-    st.plotly_chart(mp.figure_site_type_totals(filtered), use_container_width=True)
+    st.plotly_chart(mp.figure_site_type_totals(filtered), width="stretch")
 with right:
-    st.plotly_chart(mp.figure_site_type_avg_catch(filtered), use_container_width=True)
+    st.plotly_chart(mp.figure_site_type_avg_catch(filtered), width="stretch")
 
 st.subheader("Site map (city-centered)")
 st.caption("Colors reflect detection labels where present.")

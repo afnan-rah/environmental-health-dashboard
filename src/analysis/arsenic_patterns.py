@@ -20,7 +20,7 @@ def figure_arsenic_histogram(df: pd.DataFrame) -> go.Figure:
         labels={"result_mgl": "Arsenic (mg/L)", "count": "Number of tests"},
     )
     fig.add_vline(x=0.01, line_dash="dash", line_color="red", annotation_text="0.01 mg/L reference line")
-    fig.update_layout(template="plotly_white", bargap=0.05)
+    fig.update_layout(template="plotly_dark", bargap=0.05)
     return fig
 
 
@@ -33,7 +33,7 @@ def figure_tests_per_year(df: pd.DataFrame) -> go.Figure:
         title="How many arsenic tests appear in each calendar year?",
         labels={"year": "Year", "tests": "Tests recorded"},
     )
-    fig.update_layout(template="plotly_white")
+    fig.update_layout(template="plotly_dark")
     return fig
 
 
@@ -57,7 +57,7 @@ def figure_top_cities(df: pd.DataFrame, n: int = 10) -> go.Figure:
         title=f"Top {n} cities by number of tests",
         labels={"tests": "Tests", "city": "City"},
     )
-    fig.update_layout(template="plotly_white")
+    fig.update_layout(template="plotly_dark")
     return fig
 
 
@@ -86,7 +86,7 @@ def figure_county_elevated_rate(enriched: pd.DataFrame, top_n: int = 12) -> go.F
         labels={"elevated_pct": "Percent of tests (%)", "county_from_zip": "County"},
         hover_data={"tests": True},
     )
-    fig.update_layout(template="plotly_white")
+    fig.update_layout(template="plotly_dark")
     return fig
 
 

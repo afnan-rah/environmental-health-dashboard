@@ -49,6 +49,8 @@ chmod +x scripts/run_dashboard.sh   # once
 Your browser should open to **Local URL** (usually `http://localhost:8501`).  
 Use the **left sidebar** to open **Arsenic Explorer**, **Mosquito Surveillance**, etc.
 
+The UI uses a **dark theme** (teal accents, Outfit font, subtle gradients) via `.streamlit/config.toml` and `streamlit_app/ui_style.py`.
+
 **Alternative (same effect):**
 
 ```bash

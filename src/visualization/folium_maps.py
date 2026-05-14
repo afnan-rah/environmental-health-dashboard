@@ -51,11 +51,13 @@ def build_arsenic_folium_map(
     show_heatmap: bool = False,
     show_county_choropleth: bool = True,
     choropleth_metric: str = "elevated_rate",
+    dark_basemap: bool = True,
 ) -> folium.Map:
     """Interactive map: county outline, optional choropleth, clustered severity markers."""
     plot_df = df.dropna(subset=["map_latitude", "map_longitude"]).copy()
     center = _default_center(plot_df)
-    m = folium.Map(location=list(center), zoom_start=9, tiles="cartodbpositron")
+    tiles = "CartoDB dark_matter" if dark_basemap else "cartodbpositron"
+    m = folium.Map(location=list(center), zoom_start=9, tiles=tiles)
 
     gj_path = Path(county_geojson)
     geo_data = json.loads(gj_path.read_text())
@@ -64,10 +66,10 @@ def build_arsenic_folium_map(
         geo_data,
         name="Michigan counties",
         style_function=lambda _feat: {
-            "color": "#444444",
+            "color": "#64748b" if dark_basemap else "#444444",
             "weight": 1,
-            "fillOpacity": 0.02,
-            "fillColor": "#ffffff",
+            "fillOpacity": 0.06 if dark_basemap else 0.02,
+            "fillColor": "#1e293b" if dark_basemap else "#ffffff",
         },
     ).add_to(m)
 
@@ -85,9 +87,9 @@ def build_arsenic_folium_map(
                 columns=["county_fips", "elevated_rate"],
                 key_on="feature.id",
                 fill_color="YlOrRd",
-                line_color="#444444",
+                line_color="#94a3b8" if dark_basemap else "#444444",
                 line_weight=1,
-                fill_opacity=0.45,
+                fill_opacity=0.5,
                 nan_fill_opacity=0.05,
                 legend_name="Share of tests at/above reference band",
                 name="County choropleth (ZIP-linked)",
@@ -130,10 +132,11 @@ MOSQUITO_COLORS = {
 }
 
 
-def build_mosquito_folium_map(df: pd.DataFrame) -> folium.Map:
+def build_mosquito_folium_map(df: pd.DataFrame, *, dark_basemap: bool = True) -> folium.Map:
     plot_df = df.dropna(subset=["map_latitude", "map_longitude"]).copy()
     center = _default_center(plot_df)
-    m = folium.Map(location=list(center), zoom_start=10, tiles="cartodbpositron")
+    tiles = "CartoDB dark_matter" if dark_basemap else "cartodbpositron"
+    m = folium.Map(location=list(center), zoom_start=10, tiles=tiles)
     cluster = MarkerCluster(name="Surveillance records")
     for _, row in plot_df.iterrows():
         det = row.get("detected_normalized")
