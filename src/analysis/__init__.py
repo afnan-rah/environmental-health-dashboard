@@ -1,0 +1,1 @@
+"""Analytics: hotspots, trends, summaries."""

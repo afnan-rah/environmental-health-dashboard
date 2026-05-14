@@ -1,0 +1,33 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Streamlit secrets (never commit keys)
+.streamlit/secrets.toml
+
+# Generated outputs (keep folder; ignore contents)
+outputs/*
+!outputs/.gitkeep
+
+# Processed data artifacts (regenerate from pipeline)
+data/processed/*
+!data/processed/.gitkeep
