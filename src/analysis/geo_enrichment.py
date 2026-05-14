@@ -10,8 +10,8 @@ import pandas as pd
 
 from src.utils.paths import (
     KENT_CITY_CENTROIDS_CSV,
-    MI_COUNTIES_GEOJSON,
     ZIP_REFERENCE_CSV,
+    resolve_mi_counties_geojson,
 )
 
 
@@ -19,8 +19,11 @@ def _county_fips_lookup(geojson_path: Path) -> dict[str, str]:
     data = json.loads(Path(geojson_path).read_text())
     lookup: dict[str, str] = {}
     for feat in data.get("features", []):
-        name = feat.get("properties", {}).get("NAME")
+        props = feat.get("properties", {}) or {}
+        name = props.get("NAME")
         fid = feat.get("id")
+        if fid is None and props.get("GEOID") is not None:
+            fid = str(props["GEOID"])
         if name and fid is not None:
             lookup[str(name).strip().lower()] = str(fid)
     return lookup
@@ -45,7 +48,7 @@ def enrich_arsenic_for_maps(df: pd.DataFrame) -> pd.DataFrame:
             "county_name": "county_from_zip",
         }
     )
-    lookup = _county_fips_lookup(MI_COUNTIES_GEOJSON)
+    lookup = _county_fips_lookup(resolve_mi_counties_geojson())
     county_key = out["county_from_zip"].astype(str).str.strip().str.lower()
     out["county_fips"] = county_key.map(lambda n: lookup.get(n) if n and n != "nan" else None)
     return out

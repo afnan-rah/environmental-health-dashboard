@@ -30,7 +30,7 @@ st.markdown(
 
     ### Geography
     - **Arsenic map points** use **ZIP-code centroids** from an offline postal reference (`pgeocode` generated `mi_zip_reference.csv`). That is appropriate for **exploration**, not for parcel-level decisions.
-    - **County labels** join ZIP centroid references to county names, then to a Michigan county outline (`data/geo/mi_counties.geojson`) derived from a public counties dataset.
+    - **County outlines** prefer a local **Census TIGER/Line** extract (`mi_counties_tiger2025.geojson` or `mi_counties_tiger2024.geojson`) when you build it from `tl_*_us_county` under `data/raw/`; otherwise the app falls back to `data/geo/mi_counties.geojson`.
     - **Mosquito map points** use **city centroids** (geocoded once, stored as `kent_area_city_centroids.csv`) plus a deterministic jitter so markers do not stack.
 
     ### What we did **not** do

@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Download a Michigan-only county GeoJSON for offline mapping overlays."""
+"""Offline Michigan county GeoJSON (Plotly-derived subset).
+
+For **official Census TIGER/Line** boundaries, place ``tl_*_us_county`` under
+``data/raw/`` and run ``python scripts/extract_mi_counties_tiger.py`` instead.
+This script remains as a small fallback when TIGER files are not present.
+"""
 
 from __future__ import annotations
 

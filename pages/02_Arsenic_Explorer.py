@@ -12,7 +12,7 @@ import streamlit as st
 from streamlit_folium import st_folium
 
 from src.analysis import arsenic_patterns as ap
-from src.utils.paths import MI_COUNTIES_GEOJSON
+from src.utils.paths import resolve_mi_counties_geojson
 from src.visualization.folium_maps import build_arsenic_folium_map
 from streamlit_app.cached_loaders import get_arsenic_enriched
 
@@ -89,9 +89,9 @@ st.caption("Markers are color-coded by severity; counties can be shaded by ZIP-l
 show_cluster = st.toggle("Cluster markers (recommended for many points)", value=True)
 show_heat = st.toggle("Heat layer (result intensity)", value=False)
 
-fmap = build_arsenic_folium_map(
-    filtered,
-    MI_COUNTIES_GEOJSON,
+    fmap = build_arsenic_folium_map(
+        filtered,
+        resolve_mi_counties_geojson(),
     show_cluster=show_cluster,
     show_heatmap=show_heat,
     show_county_choropleth=True,

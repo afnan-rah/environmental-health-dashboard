@@ -28,6 +28,10 @@ __pycache__/
 outputs/*
 !outputs/.gitkeep
 
+# Census TIGER/Line national county downloads (very large; local only)
+data/raw/tl_2024_us_county/
+data/raw/tl_2025_us_county/
+
 # Processed data artifacts (default ignore; allow checked-in cleaned exports)
 data/processed/*
 !data/processed/.gitkeep
@@ -36,3 +40,5 @@ data/processed/*
 !data/processed/mi_zip_reference.csv
 !data/processed/kent_area_city_centroids.csv
 !data/geo/mi_counties.geojson
+!data/geo/mi_counties_tiger2024.geojson
+!data/geo/mi_counties_tiger2025.geojson

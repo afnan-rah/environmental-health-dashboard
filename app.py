@@ -53,7 +53,8 @@ def main() -> None:
 
     st.divider()
     st.info(
-        "If maps look empty, confirm you ran the app from the repository root and that `data/geo/mi_counties.geojson` exists."
+        "If maps look empty, confirm you ran the app from the repository root and that either a TIGER extract "
+        "(`data/geo/mi_counties_tiger2025.geojson`) or the fallback `data/geo/mi_counties.geojson` exists."
     )
 
 
