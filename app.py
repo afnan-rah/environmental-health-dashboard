@@ -3,7 +3,9 @@ Environmental Health Intelligence Dashboard — home page.
 
 Run from the repository root:
 
-PYTHONPATH=. streamlit run app.py
+./scripts/run_dashboard.sh
+
+Or: ``export PYTHONPATH="$(pwd)" && streamlit run app.py``
 """
 
 from __future__ import annotations
@@ -58,5 +60,5 @@ def main() -> None:
     )
 
 
-if __name__ == "__main__":
-    main()
+# Streamlit executes this file as a script; do not rely on ``__name__ == "__main__"``.
+main()

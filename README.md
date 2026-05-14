@@ -37,11 +37,39 @@ source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-Run the dashboard:
+### Run the dashboard (recommended)
+
+From the **repository root** (`environmental-health-dashboard/`):
 
 ```bash
+chmod +x scripts/run_dashboard.sh   # once
+./scripts/run_dashboard.sh
+```
+
+Your browser should open to **Local URL** (usually `http://localhost:8501`).  
+Use the **left sidebar** to open **Arsenic Explorer**, **Mosquito Surveillance**, etc.
+
+**Alternative (same effect):**
+
+```bash
+source venv/bin/activate
+export PYTHONPATH="$(pwd)"
 streamlit run app.py
 ```
+
+If imports fail with `ModuleNotFoundError: src`, you forgot `PYTHONPATH` or the run script—always run from the repo root.
+
+### Run the exploration notebooks (graphs)
+
+1. Open this **folder** in Cursor/VS Code (not an isolated notebook file outside the repo).
+2. `source venv/bin/activate` then `pip install -r requirements.txt`
+3. **One-time kernel:**  
+   `python -m ipykernel install --user --name environmental-health-dashboard --display-name "Python (env-health-dashboard)"`
+4. Open `notebooks/01_data_exploration.ipynb` or `notebooks/02_exploratory_analysis.ipynb`.
+5. **Select kernel:** *Python (env-health-dashboard)* (or pick `venv/bin/python`).
+6. **Run All** (or run cells top to bottom).  
+   If Plotly charts are blank, in notebook `02` change the first code cell to  
+   `pio.renderers.default = "notebook_connected"` instead of `"vscode"`.
 
 ## Data
 
