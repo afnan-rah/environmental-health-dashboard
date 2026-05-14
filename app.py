@@ -1,8 +1,19 @@
 """
-Environmental Health Intelligence Dashboard — main Streamlit entrypoint.
+Environmental Health Intelligence Dashboard — home page.
+
+Run from the repository root:
+
+PYTHONPATH=. streamlit run app.py
 """
 
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 import streamlit as st
 
@@ -16,36 +27,33 @@ def main() -> None:
     )
 
     st.title("Environmental Health Intelligence Dashboard")
-    st.caption(
-        "Explore environmental test and surveillance data with maps, filters, "
-        "and readable summaries—designed for researchers who are not software engineers."
+    st.caption("Plain-language maps and charts for arsenic testing and mosquito surveillance.")
+
+    st.markdown(
+        """
+        ### Purpose
+        This workspace helps a **non-technical researcher** explore two complementary datasets:
+        private well arsenic tests and public-health mosquito surveillance. The goal is not “more charts,”
+        but **clear geography**, **simple filters**, and **short explanations** that stay close to the data.
+
+        ### What is inside
+        - **Arsenic Explorer:** distributions, yearly testing activity, filters, and an interactive map.
+        - **Mosquito Surveillance:** species mix, seasonality, detection outcomes, and a city-level map.
+        - **Environmental Insights:** cautious, plain-English takeaways that connect the two views.
+        - **Methods & Limitations:** where the numbers come from—and what they cannot prove.
+
+        ### How to use this dashboard
+        1. Start with **Arsenic** or **Mosquito** depending on your question.
+        2. Use the **filters** to narrow time and place—broad views hide important local detail.
+        3. Read the **“How to interpret this”** boxes before sharing a chart externally.
+
+        **Tip:** Use the sidebar pages on the left to navigate.
+        """
     )
 
     st.divider()
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("Arsenic testing")
-        st.info(
-            "Coming next: location explorer, hotspot views, year / city / ZIP filters, "
-            "trend charts, and severity framing in plain language."
-        )
-    with col2:
-        st.subheader("Mosquito surveillance")
-        st.info(
-            "Coming next: trap and collection sites, species and count summaries, "
-            "detection trends, and seasonal comparisons."
-        )
-
-    st.divider()
-    st.subheader("Workflow")
-    st.markdown(
-        """
-        1. **Raw data** live in `data/raw/` (Excel and similar).
-        2. **Cleaning** scripts in `src/cleaning/` produce standardized tables in `data/processed/`.
-        3. **Analysis** in `src/analysis/` and notebooks supports QA and methods.
-        4. **This app** surfaces the results with strong mapping and short explanations.
-        """
+    st.info(
+        "If maps look empty, confirm you ran the app from the repository root and that `data/geo/mi_counties.geojson` exists."
     )
 
 

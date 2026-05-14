@@ -402,7 +402,7 @@ test_date,year,month,street,city,state,zip5,zip_raw,test_name,result_mgl,result_
 2014-06-05,2014,6,12631 HARVARD AVE NE,Cedar Springs,MI,49319,49319.0,Arsenic,0.0,0.0,0.0,False,non_detect,12631 HARVARD AVE NE CEDAR SPRINGS MI 49319,12631 Harvard Ave Ne Cedar Springs Mi 49319
 2014-06-09,2014,6,13033 19 MILE RD,Gowen,MI,49326,49326.0,Arsenic,0.005,2.0,2.0,False,detect_moderate_below_mcl,13033 19 MILE RD GOWEN MI 49326,13033 19 Mile Rd Gowen Mi 49326
 2014-06-09,2014,6,13033 19 MILE RD,Gowen,MI,49326,49326.0,Arsenic,0.0,0.0,0.0,False,non_detect,13033 19 MILE RD GOWEN MI 49326,13033 19 Mile Rd Gowen Mi 49326
-2014-06-09,2014,6,13033 19 MILE RD,Gowen,MI,493296,493296.0,Arsenic,0.003,1.0,1.0,False,detect_low_below_half_mcl_band,13033 19 MILE RD GOWEN MI 493296,13033 19 Mile Rd Gowen Mi 493296
+2014-06-09,2014,6,13033 19 MILE RD,Gowen,MI,,493296.0,Arsenic,0.003,1.0,1.0,False,detect_low_below_half_mcl_band,13033 19 MILE RD GOWEN MI 493296,13033 19 Mile Rd Gowen Mi 493296
 2014-06-16,2014,6,302 S MAPLE ST SE,Caledonia,MI,49316,49316.0,Arsenic,0.003,1.0,1.0,False,detect_low_below_half_mcl_band,302 S MAPLE ST SE CALEDONIA MI 49316,302 S Maple St Se Caledonia Mi 49316
 2014-06-26,2014,6,3700 -17 MILE RD NE,Cedar Springs,MI,49319,49319.0,Arsenic,0.007,2.0,2.0,False,detect_moderate_below_mcl,3700 -17 MILE RD NE CEDAR SPRINGS MI 49319,3700 -17 Mile Rd Ne Cedar Springs Mi 49319
 2014-06-30,2014,6,3681 RUSSELL ST NE,Cedar Springs,MI,49319,49319.0,Arsenic,0.0,0.0,0.0,False,non_detect,3681 RUSSELL ST NE CEDAR SPRINGS MI 49319,3681 Russell St Ne Cedar Springs Mi 49319

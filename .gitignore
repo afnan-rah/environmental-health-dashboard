@@ -33,3 +33,6 @@ data/processed/*
 !data/processed/.gitkeep
 !data/processed/arsenic_cleaned.csv
 !data/processed/mosquito_cleaned.csv
+!data/processed/mi_zip_reference.csv
+!data/processed/kent_area_city_centroids.csv
+!data/geo/mi_counties.geojson

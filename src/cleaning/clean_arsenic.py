@@ -55,8 +55,10 @@ def _zip_to_string(zip_raw: Any) -> str | None:
     try:
         s = f"{int(float(zip_raw)):05d}"
     except (TypeError, ValueError):
-        s = str(zip_raw).strip()
-    return s if s else None
+        s = "".join(ch for ch in str(zip_raw).strip() if ch.isdigit())
+    if len(s) != 5:
+        return None
+    return s
 
 
 def infer_result_category_code(result_mgl: float | None) -> float | None:
