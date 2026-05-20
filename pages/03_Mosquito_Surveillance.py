@@ -7,7 +7,6 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import plotly.io as pio
 import streamlit as st
 from streamlit_folium import st_folium
 
@@ -16,7 +15,7 @@ from src.visualization.folium_maps import build_mosquito_folium_map
 from streamlit_app.cached_loaders import get_mosquito_enriched
 from streamlit_app.download_section import render_download_section
 from streamlit_app.export_mosquito import build_mosquito_export_bundle
-from streamlit_app.ui_style import apply_dashboard_style
+from streamlit_app.ui_style import ensure_theme_applied
 
 _MOSQUITO_CHART_STEMS = (
     "species_counts",
@@ -26,8 +25,7 @@ _MOSQUITO_CHART_STEMS = (
     "site_type_avg_catch",
 )
 
-apply_dashboard_style()
-pio.templates.default = "plotly_dark"
+ensure_theme_applied()
 
 
 st.title("Mosquito Surveillance")

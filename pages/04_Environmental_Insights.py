@@ -12,9 +12,9 @@ import streamlit as st
 from src.analysis import arsenic_patterns as ap
 from src.analysis import insights_narrative as ins
 from streamlit_app.cached_loaders import get_arsenic, get_arsenic_enriched, get_mosquito
-from streamlit_app.ui_style import apply_dashboard_style
+from streamlit_app.ui_style import ensure_theme_applied
 
-apply_dashboard_style()
+ensure_theme_applied()
 
 
 st.title("Environmental Insights")

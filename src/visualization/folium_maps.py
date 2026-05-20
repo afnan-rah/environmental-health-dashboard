@@ -18,6 +18,18 @@ SEVERITY_COLORS: dict[str, str] = {
 }
 
 
+def prefer_dark_basemap(dark_basemap: bool | None = None) -> bool:
+    """Use light map tiles when the dashboard theme is light."""
+    if dark_basemap is not None:
+        return dark_basemap
+    try:
+        import streamlit as st
+
+        return st.session_state.get("eh_theme", "dark") != "light"
+    except Exception:
+        return True
+
+
 def _default_center(df: pd.DataFrame) -> tuple[float, float]:
     if df.empty or df["map_latitude"].isna().all():
         return 43.05, -85.68
@@ -51,9 +63,10 @@ def build_arsenic_folium_map(
     show_heatmap: bool = False,
     show_county_choropleth: bool = True,
     choropleth_metric: str = "elevated_rate",
-    dark_basemap: bool = True,
+    dark_basemap: bool | None = None,
 ) -> folium.Map:
     """Interactive map: county outline, optional choropleth, clustered severity markers."""
+    dark_basemap = prefer_dark_basemap(dark_basemap)
     plot_df = df.dropna(subset=["map_latitude", "map_longitude"]).copy()
     center = _default_center(plot_df)
     tiles = "CartoDB dark_matter" if dark_basemap else "cartodbpositron"
@@ -66,7 +79,7 @@ def build_arsenic_folium_map(
         geo_data,
         name="Michigan counties",
         style_function=lambda _feat: {
-            "color": "#64748b" if dark_basemap else "#444444",
+            "color": "#64748b" if dark_basemap else "#596e79",
             "weight": 1,
             "fillOpacity": 0.06 if dark_basemap else 0.02,
             "fillColor": "#1e293b" if dark_basemap else "#ffffff",
@@ -87,15 +100,15 @@ def build_arsenic_folium_map(
                 columns=["county_fips", "elevated_rate"],
                 key_on="feature.id",
                 fill_color="YlOrRd",
-                line_color="#94a3b8" if dark_basemap else "#444444",
+                line_color="#94a3b8" if dark_basemap else "#c7b198",
                 line_weight=1,
                 fill_opacity=0.5,
                 nan_fill_opacity=0.05,
                 legend_name="Share of tests at/above reference band",
                 name="County choropleth (ZIP-linked)",
             )
-            if dark_basemap and choro.color_scale is not None:
-                choro.color_scale.text_color = "#e8eef4"
+            if choro.color_scale is not None:
+                choro.color_scale.text_color = "#e8eef4" if dark_basemap else "#596e79"
             choro.add_to(m)
 
     markers_layer = MarkerCluster(name="Arsenic tests (clustered)") if show_cluster else None
@@ -136,8 +149,9 @@ MOSQUITO_COLORS = {
 
 
 def build_mosquito_folium_map(
-    df: pd.DataFrame, *, show_heatmap: bool = False, dark_basemap: bool = True
+    df: pd.DataFrame, *, show_heatmap: bool = False, dark_basemap: bool | None = None
 ) -> folium.Map:
+    dark_basemap = prefer_dark_basemap(dark_basemap)
     plot_df = df.dropna(subset=["map_latitude", "map_longitude"]).copy()
     center = _default_center(plot_df)
     tiles = "CartoDB dark_matter" if dark_basemap else "cartodbpositron"

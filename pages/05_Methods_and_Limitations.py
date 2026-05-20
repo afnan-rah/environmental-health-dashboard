@@ -10,9 +10,9 @@ if str(ROOT) not in sys.path:
 import streamlit as st
 
 from streamlit_app.cached_loaders import get_arsenic, get_mosquito
-from streamlit_app.ui_style import apply_dashboard_style
+from streamlit_app.ui_style import ensure_theme_applied
 
-apply_dashboard_style()
+ensure_theme_applied()
 
 st.markdown(
     """

@@ -20,7 +20,7 @@ if str(ROOT) not in sys.path:
 import streamlit as st
 
 from streamlit_app.home_page import render_home
-from streamlit_app.ui_style import apply_dashboard_style
+from streamlit_app.ui_style import apply_dashboard_style, apply_plotly_theme, render_theme_selector
 
 st.set_page_config(
     page_title="Environmental Health Intelligence",
@@ -28,7 +28,11 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+if "eh_theme" not in st.session_state:
+    st.session_state["eh_theme"] = "dark"
+render_theme_selector()
 apply_dashboard_style()
+apply_plotly_theme()
 
 pg = st.navigation(
     [

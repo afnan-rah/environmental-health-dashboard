@@ -6,6 +6,8 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
+from src.visualization.plotly_theme import finalize_figure
+
 
 def figure_species_counts(df: pd.DataFrame, top_n: int = 10) -> go.Figure:
     sub = df.copy()
@@ -25,8 +27,7 @@ def figure_species_counts(df: pd.DataFrame, top_n: int = 10) -> go.Figure:
         title=f"Top {top_n} species labels (including unidentified rows)",
         labels={"records": "Trap records", "species_label": "Species"},
     )
-    fig.update_layout(template="plotly_dark")
-    return fig
+    return finalize_figure(fig)
 
 
 def figure_season_counts(df: pd.DataFrame) -> go.Figure:
@@ -41,8 +42,7 @@ def figure_season_counts(df: pd.DataFrame) -> go.Figure:
         title="Trap records by season (based on trap set month)",
         labels={"season": "Season", "records": "Records"},
     )
-    fig.update_layout(template="plotly_dark")
-    return fig
+    return finalize_figure(fig)
 
 
 def figure_detection_by_month(df: pd.DataFrame) -> go.Figure:
@@ -61,8 +61,8 @@ def figure_detection_by_month(df: pd.DataFrame) -> go.Figure:
         title="Detection outcomes by trap-set month",
         labels={"month": "Month", "records": "Records", "detected_normalized": "Outcome"},
     )
-    fig.update_layout(template="plotly_dark", barmode="stack")
-    return fig
+    fig.update_layout(barmode="stack")
+    return finalize_figure(fig)
 
 
 def figure_site_type_totals(df: pd.DataFrame) -> go.Figure:
@@ -78,8 +78,8 @@ def figure_site_type_totals(df: pd.DataFrame) -> go.Figure:
         title="Where traps were placed (record counts)",
         labels={"collection_site_type": "Site type", "records": "Trap records"},
     )
-    fig.update_layout(template="plotly_dark", xaxis_tickangle=-25)
-    return fig
+    fig.update_layout(xaxis_tickangle=-25)
+    return finalize_figure(fig)
 
 
 def figure_site_type_avg_catch(df: pd.DataFrame) -> go.Figure:
@@ -95,8 +95,8 @@ def figure_site_type_avg_catch(df: pd.DataFrame) -> go.Figure:
         title="Average adult mosquitoes collected per record, by site type",
         labels={"collection_site_type": "Site type", "total_adults_collected": "Mean adults"},
     )
-    fig.update_layout(template="plotly_dark", xaxis_tickangle=-25)
-    return fig
+    fig.update_layout(xaxis_tickangle=-25)
+    return finalize_figure(fig)
 
 
 def interpret_species(df: pd.DataFrame) -> str:

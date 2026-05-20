@@ -7,7 +7,6 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-import plotly.io as pio
 import streamlit as st
 from streamlit_folium import st_folium
 
@@ -17,10 +16,9 @@ from src.visualization.folium_maps import build_arsenic_folium_map
 from streamlit_app.cached_loaders import get_arsenic_enriched
 from streamlit_app.download_section import render_download_section
 from streamlit_app.export_arsenic import build_arsenic_export_bundle
-from streamlit_app.ui_style import apply_dashboard_style
+from streamlit_app.ui_style import ensure_theme_applied
 
-apply_dashboard_style()
-pio.templates.default = "plotly_dark"
+ensure_theme_applied()
 
 _ARSENIC_CHART_STEMS = (
     "arsenic_histogram",
