@@ -6,23 +6,30 @@ import streamlit as st
 
 
 def render_home() -> None:
-    top, nav = st.columns([1.15, 1], vertical_alignment="top")
-    with top:
-        st.title("Environmental Health Intelligence")
-        st.caption("Maps, filters, and plain-language context for arsenic testing and mosquito surveillance.")
-    with nav:
-        st.markdown("**Open a workspace**")
-        a, b = st.columns(2)
-        with a:
-            if st.button("💧 Arsenic Explorer", use_container_width=True, key="nav_arsenic"):
-                st.switch_page("pages/02_Arsenic_Explorer.py")
-            if st.button("✨ Environmental Insights", use_container_width=True, key="nav_insights"):
-                st.switch_page("pages/04_Environmental_Insights.py")
-        with b:
-            if st.button("🦟 Mosquito Surveillance", use_container_width=True, key="nav_mosquito"):
-                st.switch_page("pages/03_Mosquito_Surveillance.py")
-            if st.button("📋 Methods & limitations", use_container_width=True, key="nav_methods"):
-                st.switch_page("pages/05_Methods_and_Limitations.py")
+    with st.container(border=True):
+        intro, nav = st.columns([1.25, 1], gap="large")
+        with intro:
+            st.markdown("# Environmental Health Intelligence")
+            st.caption(
+                "Maps, filters, and plain-language context for arsenic testing and "
+                "mosquito surveillance."
+            )
+        with nav:
+            st.markdown("##### Open a workspace")
+            row1_a, row1_b = st.columns(2, gap="small")
+            with row1_a:
+                if st.button("💧 Arsenic Explorer", use_container_width=True, key="nav_arsenic"):
+                    st.switch_page("pages/02_Arsenic_Explorer.py")
+            with row1_b:
+                if st.button("🦟 Mosquito Surveillance", use_container_width=True, key="nav_mosquito"):
+                    st.switch_page("pages/03_Mosquito_Surveillance.py")
+            row2_a, row2_b = st.columns(2, gap="small")
+            with row2_a:
+                if st.button("✨ Environmental Insights", use_container_width=True, key="nav_insights"):
+                    st.switch_page("pages/04_Environmental_Insights.py")
+            with row2_b:
+                if st.button("📋 Methods & limitations", use_container_width=True, key="nav_methods"):
+                    st.switch_page("pages/05_Methods_and_Limitations.py")
 
     st.divider()
 
@@ -59,6 +66,7 @@ def render_home() -> None:
 
     st.divider()
     st.info(
-        "The **home page** is an overview only. **Maps and charts** are on **Arsenic Explorer** and **Mosquito Surveillance**. "
-        "If a map is blank there, confirm `data/geo/mi_counties_tiger2025.geojson` or `data/geo/mi_counties.geojson` exists."
+        "The **home page** is an overview only. **Maps and charts** are on **Arsenic Explorer** and "
+        "**Mosquito Surveillance**. If a map is blank there, confirm "
+        "`data/geo/mi_counties_tiger2025.geojson` or `data/geo/mi_counties.geojson` exists."
     )

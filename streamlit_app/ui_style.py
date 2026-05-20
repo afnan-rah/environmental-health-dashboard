@@ -234,12 +234,23 @@ _CSS_LIGHT_WIDGETS = f"""
   {_LIGHT}[data-testid="stMainBlockContainer"] div[data-testid="stExpander"] summary span {{
     color: {SLATE} !important;
   }}
-  /* Bordered cards: st.container(border=True) in Streamlit 1.57 */
+  /* Bordered cards: st.container(border=True) — outer wrapper only */
   {_LIGHT}[data-testid="stLayoutWrapper"] > div {{
     border: 2px solid {SLATE} !important;
     border-radius: 0.5rem !important;
     background-color: {WARM} !important;
     box-shadow: 0 2px 10px rgba(89, 110, 121, 0.14) !important;
+  }}
+  /* Column rows / nested layouts inside a card are not separate boxes */
+  {_LIGHT}[data-testid="stLayoutWrapper"] [data-testid="stLayoutWrapper"] > div,
+  {_LIGHT}[data-testid="stColumn"] {{
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }}
+  {_LIGHT}[data-testid="stLayoutWrapper"] > div [data-testid="stButton"] > button {{
+    min-height: 2.65rem;
+    font-weight: 500;
   }}
   /* Horizontal dividers (st.divider) — light only */
   {_LIGHT}[data-testid="stDivider"],
