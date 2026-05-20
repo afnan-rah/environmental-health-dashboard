@@ -6,8 +6,17 @@ import json
 
 import streamlit as st
 
-from src.visualization.plotly_theme import sync_template_from_session
 from streamlit_app.light_palette import SAND, SLATE, SLATE_MUTED, TAN, WARM
+
+__all__ = [
+    "apply_dashboard_style",
+    "apply_plotly_theme",
+    "ensure_theme_applied",
+    "get_theme",
+    "is_light_theme",
+    "plotly_template_name",
+    "render_theme_selector",
+]
 
 THEME_KEY = "eh_theme"
 # Scope every light override so dark mode keeps Streamlit's native teal borders & tags.
@@ -340,6 +349,8 @@ def plotly_template_name() -> str:
 
 def apply_plotly_theme() -> None:
     """Sync Plotly default template with the active dashboard theme."""
+    from src.visualization.plotly_theme import sync_template_from_session
+
     sync_template_from_session()
 
 
@@ -501,6 +512,7 @@ def apply_dashboard_style() -> None:
         unsafe_allow_html=True,
     )
     _inject_global_css(_dashboard_css_bundle())
+    apply_plotly_theme()
 
 
 def ensure_theme_applied() -> None:
