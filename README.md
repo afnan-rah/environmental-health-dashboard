@@ -63,7 +63,9 @@ If imports fail with `ModuleNotFoundError: src`, you forgot `PYTHONPATH` or the 
 
 ### Publish online (free)
 
-**GitHub Pages cannot run Streamlit** (static files only). Host the full dashboard on **[Streamlit Community Cloud](https://share.streamlit.io)** from this repo (`app.py`, branch `main`). Optional static landing page: `docs/` + GitHub Actions (see **`docs/DEPLOY.md`** for step-by-step instructions).
+**Live app:** [environmental-health-dashboard-afnanrahman.streamlit.app](https://environmental-health-dashboard-afnanrahman.streamlit.app/)
+
+**GitHub Pages** hosts only a static landing page (`docs/`). The interactive dashboard runs on **Streamlit Community Cloud** (`app.py`, branch `main`). See **`docs/DEPLOY.md`** for redeploy steps.
 
 For local notebooks and TIGER scripts, also install: `pip install -r requirements-dev.txt`
 

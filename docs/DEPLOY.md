@@ -47,11 +47,9 @@ Raw Excel files under `data/raw/` are optional for the hosted app (not required 
 
 First build may take a few minutes (`pip install -r requirements.txt`).
 
-When it succeeds, you get a public URL like:
+**Live deployment:**
 
-`https://environmental-health-dashboard.streamlit.app`
-
-(or similar, depending on the name you chose).
+[https://environmental-health-dashboard-afnanrahman.streamlit.app/](https://environmental-health-dashboard-afnanrahman.streamlit.app/)
 
 ### If the deploy fails
 
@@ -69,7 +67,7 @@ This repo includes a static page in `docs/index.html` and workflow `.github/work
    - Source: **GitHub Actions** (the workflow deploys `docs/` on push to `main`).
 2. After the workflow runs, your site is at:
    `https://afnan-rah.github.io/environmental-health-dashboard/`
-3. Edit `docs/index.html` and set the **Open live dashboard** button `href` to your Streamlit Cloud URL from Step 2.
+3. The landing page button already points to the Streamlit app URL in `docs/index.html`.
 
 ---
 
