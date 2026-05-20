@@ -15,10 +15,19 @@ from src.analysis import arsenic_patterns as ap
 from src.utils.paths import resolve_mi_counties_geojson
 from src.visualization.folium_maps import build_arsenic_folium_map
 from streamlit_app.cached_loaders import get_arsenic_enriched
+from streamlit_app.download_section import render_download_section
+from streamlit_app.export_arsenic import build_arsenic_export_bundle
 from streamlit_app.ui_style import apply_dashboard_style
 
 apply_dashboard_style()
 pio.templates.default = "plotly_dark"
+
+_ARSENIC_CHART_STEMS = (
+    "arsenic_histogram",
+    "tests_per_year",
+    "top_cities_by_tests",
+    "county_elevated_rate",
+)
 
 
 st.title("Arsenic Explorer")
@@ -74,17 +83,22 @@ m1.metric("Tests shown", f"{len(filtered):,}")
 m2.metric("At/above reference band", f"{ap.elevated_rate(filtered):.1f}%")
 m3.metric("Cities represented", f"{filtered['city'].nunique():,}")
 
-left, right = st.columns(2)
-with left:
-    st.plotly_chart(ap.figure_arsenic_histogram(filtered), width="stretch")
-with right:
-    st.plotly_chart(ap.figure_tests_per_year(filtered), width="stretch")
+fig_hist = ap.figure_arsenic_histogram(filtered)
+fig_year = ap.figure_tests_per_year(filtered)
+fig_cities = ap.figure_top_cities(filtered)
+fig_county = ap.figure_county_elevated_rate(filtered)
 
 left, right = st.columns(2)
 with left:
-    st.plotly_chart(ap.figure_top_cities(filtered), width="stretch")
+    st.plotly_chart(fig_hist, width="stretch")
 with right:
-    st.plotly_chart(ap.figure_county_elevated_rate(filtered), width="stretch")
+    st.plotly_chart(fig_year, width="stretch")
+
+left, right = st.columns(2)
+with left:
+    st.plotly_chart(fig_cities, width="stretch")
+with right:
+    st.plotly_chart(fig_county, width="stretch")
 
 st.subheader("Interactive map")
 st.caption("Markers are color-coded by severity; counties can be shaded by ZIP-linked elevated rate (where sample size allows).")
@@ -93,6 +107,7 @@ show_cluster = st.toggle("Cluster markers (recommended for many points)", value=
 show_heat = st.toggle("Heat layer (result intensity)", value=False)
 
 mappable = filtered.dropna(subset=["map_latitude", "map_longitude"])
+fmap = None
 if mappable.empty:
     st.warning(
         "No rows have map coordinates (missing ZIP match in `mi_zip_reference.csv`). "
@@ -107,3 +122,27 @@ else:
         show_county_choropleth=True,
     )
     st_folium(fmap, use_container_width=True, height=650)
+
+st.subheader("Download figures & map")
+st.caption(
+    "Each chart exports as **PNG** (static image for slides) and **HTML** (interactive Plotly). "
+    "The map includes **interactive HTML** plus a **map snapshot PNG**. "
+    "Exports do not launch Chrome (safe on macOS)."
+)
+
+render_download_section(
+    lambda: build_arsenic_export_bundle(filtered, fmap, include_map=fmap is not None),
+    chart_stems=_ARSENIC_CHART_STEMS,
+    zip_prefix="arsenic_explorer",
+    export_key=(
+        len(filtered),
+        tuple(year_pick),
+        tuple(sorted(city_pick)),
+        tuple(sev_pick),
+        show_cluster,
+        show_heat,
+        fmap is not None,
+    ),
+    session_bundle_key="arsenic_export_bundle",
+    session_key_key="arsenic_export_key",
+)

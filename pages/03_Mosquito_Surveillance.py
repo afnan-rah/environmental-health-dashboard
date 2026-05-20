@@ -14,7 +14,17 @@ from streamlit_folium import st_folium
 from src.analysis import mosquito_patterns as mp
 from src.visualization.folium_maps import build_mosquito_folium_map
 from streamlit_app.cached_loaders import get_mosquito_enriched
+from streamlit_app.download_section import render_download_section
+from streamlit_app.export_mosquito import build_mosquito_export_bundle
 from streamlit_app.ui_style import apply_dashboard_style
+
+_MOSQUITO_CHART_STEMS = (
+    "species_counts",
+    "season_counts",
+    "detection_by_month",
+    "site_type_totals",
+    "site_type_avg_catch",
+)
 
 apply_dashboard_style()
 pio.templates.default = "plotly_dark"
@@ -91,3 +101,23 @@ show_heat = st.toggle("Heat layer (adults collected intensity)", value=False)
 
 fmap = build_mosquito_folium_map(filtered, show_heatmap=show_heat)
 st_folium(fmap, use_container_width=True, height=650)
+
+st.subheader("Download figures & map")
+st.caption(
+    "Each chart exports as **PNG** and **HTML** using the **same titles as on this page**. "
+    "The map includes interactive HTML plus a static snapshot PNG."
+)
+
+render_download_section(
+    lambda: build_mosquito_export_bundle(filtered, fmap, include_map=True),
+    chart_stems=_MOSQUITO_CHART_STEMS,
+    zip_prefix="mosquito_surveillance",
+    export_key=(
+        len(filtered),
+        tuple(species_pick),
+        tuple(sorted(site_pick)),
+        show_heat,
+    ),
+    session_bundle_key="mosquito_export_bundle",
+    session_key_key="mosquito_export_key",
+)
