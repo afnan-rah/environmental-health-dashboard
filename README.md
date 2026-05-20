@@ -27,14 +27,14 @@ Raw Excel → cleaning pipeline → processed datasets → analysis → maps / c
 | `src/utils/` | Paths, config, shared helpers. |
 | `streamlit_app/` | Optional multipage Streamlit pieces as the app grows. |
 | `outputs/` | Exported figures, tables, or reports. |
-| `app.py` | Main Streamlit entrypoint. |
+| `app.py` | Main Streamlit entrypoint; sidebar label **Home** via ``st.navigation`` / ``st.Page``. |
 
 ## Environment setup
 
 ```bash
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ### Run the dashboard (recommended)
@@ -60,6 +60,12 @@ streamlit run app.py
 ```
 
 If imports fail with `ModuleNotFoundError: src`, you forgot `PYTHONPATH` or the run script—always run from the repo root.
+
+### Publish online (free)
+
+**GitHub Pages cannot run Streamlit** (static files only). Host the full dashboard on **[Streamlit Community Cloud](https://share.streamlit.io)** from this repo (`app.py`, branch `main`). Optional static landing page: `docs/` + GitHub Actions (see **`docs/DEPLOY.md`** for step-by-step instructions).
+
+For local notebooks and TIGER scripts, also install: `pip install -r requirements-dev.txt`
 
 ### Run the exploration notebooks (graphs)
 

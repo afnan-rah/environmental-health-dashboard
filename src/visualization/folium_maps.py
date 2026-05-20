@@ -81,7 +81,7 @@ def build_arsenic_folium_map(
             .agg(tests=("elevated_flag", "size"), elevated_rate=("elevated_flag", "mean"))
         )
         if not agg.empty and agg["tests"].max() >= 5:
-            folium.Choropleth(
+            choro = folium.Choropleth(
                 geo_data=geo_data,
                 data=agg,
                 columns=["county_fips", "elevated_rate"],
@@ -93,7 +93,10 @@ def build_arsenic_folium_map(
                 nan_fill_opacity=0.05,
                 legend_name="Share of tests at/above reference band",
                 name="County choropleth (ZIP-linked)",
-            ).add_to(m)
+            )
+            if dark_basemap and choro.color_scale is not None:
+                choro.color_scale.text_color = "#e8eef4"
+            choro.add_to(m)
 
     markers_layer = MarkerCluster(name="Arsenic tests (clustered)") if show_cluster else None
     for _, row in plot_df.iterrows():
@@ -132,7 +135,9 @@ MOSQUITO_COLORS = {
 }
 
 
-def build_mosquito_folium_map(df: pd.DataFrame, *, dark_basemap: bool = True) -> folium.Map:
+def build_mosquito_folium_map(
+    df: pd.DataFrame, *, show_heatmap: bool = False, dark_basemap: bool = True
+) -> folium.Map:
     plot_df = df.dropna(subset=["map_latitude", "map_longitude"]).copy()
     center = _default_center(plot_df)
     tiles = "CartoDB dark_matter" if dark_basemap else "cartodbpositron"
@@ -169,5 +174,26 @@ def build_mosquito_folium_map(df: pd.DataFrame, *, dark_basemap: bool = True) ->
             popup=folium.Popup(popup, max_width=280),
         ).add_to(cluster)
     cluster.add_to(m)
+
+    if show_heatmap and not plot_df.empty:
+        weights = plot_df["total_adults_collected"].fillna(0).astype(float).clip(lower=0.5)
+        cap = float(weights.quantile(0.95)) if len(weights) > 1 else float(weights.max())
+        cap = max(cap, 1.0)
+        heat_data = [
+            [float(lat), float(lon), min(float(w), cap) / cap]
+            for lat, lon, w in zip(
+                plot_df["map_latitude"].astype(float),
+                plot_df["map_longitude"].astype(float),
+                weights,
+            )
+        ]
+        HeatMap(
+            heat_data,
+            radius=20,
+            blur=18,
+            min_opacity=0.22,
+            name="Adults collected (heat)",
+        ).add_to(m)
+
     folium.LayerControl(collapsed=False).add_to(m)
     return m

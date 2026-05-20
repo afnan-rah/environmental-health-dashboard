@@ -19,8 +19,15 @@ def apply_dashboard_style() -> None:
     --eh-surface: #151f32;
     --eh-glow: rgba(45, 212, 191, 0.12);
   }
-  html, body, [data-testid="stAppViewContainer"] * {
-    font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif !important;
+  /*
+   * Do not use ``* { font-family: ... !important }`` — it overrides Streamlit’s
+   * ``Material Symbols Rounded`` on expanders, sidebar controls, etc., so ligatures
+   * render as literal text (e.g. arrow_right, keyboard_double_arrow_left).
+   */
+  [data-testid="stAppViewContainer"],
+  [data-testid="stSidebar"],
+  [data-testid="stHeader"] {
+    font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
   }
   [data-testid="stAppViewContainer"] {
     background: radial-gradient(1200px 600px at 10% -10%, rgba(45,212,191,0.08), transparent 55%),

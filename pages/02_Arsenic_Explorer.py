@@ -59,12 +59,7 @@ if filtered.empty:
     st.warning("No rows match your filters. Reset selections to see data.")
     st.stop()
 
-m1, m2, m3 = st.columns(3)
-m1.metric("Tests shown", f"{len(filtered):,}")
-m2.metric("At/above reference band", f"{ap.elevated_rate(filtered):.1f}%")
-m3.metric("Cities represented", f"{filtered['city'].nunique():,}")
-
-st.subheader("What this slice suggests (plain English)")
+st.subheader("Overview")
 st.markdown(
     f"{ap.interpret_histogram(filtered)}\n\n"
     f"{ap.interpret_elevated_share(filtered)}\n\n"
@@ -72,6 +67,12 @@ st.markdown(
     f"{ap.interpret_top_cities(filtered)}\n\n"
     f"{ap.interpret_county_rates(filtered)}"
 )
+
+st.subheader("Results")
+m1, m2, m3 = st.columns(3)
+m1.metric("Tests shown", f"{len(filtered):,}")
+m2.metric("At/above reference band", f"{ap.elevated_rate(filtered):.1f}%")
+m3.metric("Cities represented", f"{filtered['city'].nunique():,}")
 
 left, right = st.columns(2)
 with left:

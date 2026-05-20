@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Environmental Health Intelligence Dashboard</title>
+  <meta name="description" content="Interactive maps and charts for arsenic well testing and mosquito surveillance." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1220;
+      --surface: #151f32;
+      --text: #e8eef7;
+      --muted: #94a3b8;
+      --accent: #2dd4bf;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: radial-gradient(900px 500px at 10% -10%, rgba(45,212,191,0.1), transparent 55%),
+                  linear-gradient(180deg, var(--bg), #0a0f18);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    main {
+      max-width: 42rem;
+      background: rgba(21, 31, 50, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.75rem;
+      letter-spacing: -0.03em;
+      color: #f0fdfa;
+    }
+    p { line-height: 1.6; color: var(--muted); margin: 0 0 1.25rem; }
+    .cta {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.85rem 1.5rem;
+      background: linear-gradient(135deg, var(--accent), #14b8a6);
+      color: #042f2e;
+      font-weight: 700;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(45, 212, 191, 0.35);
+    }
+    .note {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      font-size: 0.9rem;
+    }
+    code {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-size: 0.88em;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Environmental Health Intelligence</h1>
+    <p>
+      This page is a lightweight landing site on GitHub Pages. The interactive dashboard
+      (maps, filters, charts) runs on <strong>Streamlit Community Cloud</strong> because it needs Python.
+    </p>
+    <a id="app-link" class="cta" href="https://share.streamlit.io/" rel="noopener">
+      Open live dashboard →
+    </a>
+    <p class="note">
+      After you deploy on Streamlit Cloud, set your public app URL in
+      <code>docs/index.html</code> (the <code>href</code> on the button above), then push to GitHub.
+      Repository: <a href="https://github.com/afnan-rah/environmental-health-dashboard" style="color: var(--accent);">afnan-rah/environmental-health-dashboard</a>
+    </p>
+  </main>
+  <script>
+    // Optional: set window.STREAMLIT_APP_URL before this script, or edit href in HTML.
+    var url = window.STREAMLIT_APP_URL;
+    if (url) document.getElementById('app-link').href = url;
+  </script>
+</body>
+</html>

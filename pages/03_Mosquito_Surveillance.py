@@ -53,7 +53,7 @@ if filtered.empty:
     st.warning("No rows match your filters.")
     st.stop()
 
-st.subheader("What this slice suggests (plain English)")
+st.subheader("Overview")
 st.markdown(
     f"{mp.interpret_species(filtered)}\n\n"
     f"{mp.interpret_season(filtered)}\n\n"
@@ -61,6 +61,7 @@ st.markdown(
     f"{mp.interpret_site_types(filtered)}"
 )
 
+st.subheader("Results")
 m1, m2, m3 = st.columns(3)
 m1.metric("Records shown", f"{len(filtered):,}")
 m2.metric(
@@ -86,5 +87,7 @@ with right:
 st.subheader("Site map (city-centered)")
 st.caption("Colors reflect detection labels where present.")
 
-fmap = build_mosquito_folium_map(filtered)
+show_heat = st.toggle("Heat layer (adults collected intensity)", value=False)
+
+fmap = build_mosquito_folium_map(filtered, show_heatmap=show_heat)
 st_folium(fmap, use_container_width=True, height=650)
