@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 import streamlit as st
 
 from streamlit_app.light_palette import SAND, SLATE, SLATE_MUTED, TAN, WARM
@@ -19,8 +17,8 @@ __all__ = [
 ]
 
 THEME_KEY = "eh_theme"
-# Scope every light override so dark mode keeps Streamlit's native teal borders & tags.
-_LIGHT = 'html[data-eh-theme="light"] '
+# Light-only CSS is injected only in light mode (no attribute scoping needed).
+_LIGHT = ""
 
 # Plain string (not an f-string) so CSS braces are not interpreted by Python.
 _LAYOUT_CSS = """
@@ -236,8 +234,8 @@ _CSS_LIGHT_WIDGETS = f"""
   {_LIGHT}[data-testid="stMainBlockContainer"] div[data-testid="stExpander"] summary span {{
     color: {SLATE} !important;
   }}
-  /* Bordered cards: st.container(border=True) in Streamlit 1.57 (marked data-eh-bordered in JS) */
-  {_LIGHT}[data-eh-bordered="1"] {{
+  /* Bordered cards: st.container(border=True) in Streamlit 1.57 */
+  {_LIGHT}[data-testid="stLayoutWrapper"] > div {{
     border: 2px solid {SLATE} !important;
     border-radius: 0.5rem !important;
     background-color: {WARM} !important;
@@ -266,14 +264,12 @@ _CSS_LIGHT_WIDGETS = f"""
 """
 
 _CSS_LIGHT_VARS = f"""
-  html[data-eh-theme="light"] {{
+  :root {{
     --background-color: {SAND};
     --secondary-background-color: {WARM};
     --text-color: {SLATE};
     --primary-color: {SLATE};
     --border-color: {SLATE};
-  }}
-  html[data-eh-theme="light"] .stApp {{
     --eh-accent: {SLATE};
     --eh-accent-dim: {SLATE_MUTED};
     --eh-surface: {WARM};
@@ -296,13 +292,13 @@ _CSS_LIGHT_VARS = f"""
     --eh-alert-shadow: 0 8px 24px rgba(89, 110, 121, 0.12);
     --eh-hr: linear-gradient(90deg, transparent, {TAN}, transparent);
   }}
-  html[data-eh-theme="light"] .stApp,
-  html[data-eh-theme="light"] [data-testid="stAppViewContainer"],
-  html[data-eh-theme="light"] section.main {{
+  .stApp,
+  [data-testid="stAppViewContainer"],
+  section.main {{
     background-color: {SAND} !important;
     color: {SLATE} !important;
   }}
-  html[data-eh-theme="light"] [data-testid="stHeader"] {{
+  [data-testid="stHeader"] {{
     background-color: {SAND} !important;
   }}
 """
@@ -379,127 +375,10 @@ def _dashboard_css_bundle() -> str:
 
 
 def _inject_global_css(css: str) -> None:
-    """Apply CSS to the main Streamlit document (iframe injection does not reach the app)."""
-    css_json = json.dumps(css)
-    theme_attr = "light" if is_light_theme() else "dark"
-    pal_json = json.dumps(
-        {
-            "tagBg": TAN,
-            "tagFg": SLATE,
-            "btnBg": WARM,
-            "btnFg": SLATE,
-            "boxBorder": SLATE,
-            "primaryBg": SLATE,
-            "primaryFg": SAND,
-        }
-    )
-    st.html(
-        f"""<script>
-        (function() {{
-          const css = {css_json};
-          const pal = {pal_json};
-          const theme = {json.dumps(theme_attr)};
-          const doc = window.parent.document;
-          doc.documentElement.setAttribute("data-eh-theme", theme);
-          let el = doc.getElementById("eh-dashboard-theme");
-          if (!el) {{
-            el = doc.createElement("style");
-            el.id = "eh-dashboard-theme";
-            doc.head.appendChild(el);
-          }}
-          el.textContent = css;
-          const painted = "data-eh-painted";
-          const props = [
-            "background-color", "background", "color", "border-color",
-            "border", "height", "opacity", "box-shadow", "border-radius", "outline"
-          ];
-          function clearEhPaint() {{
-            if (window.__ehWidgetObserver) {{
-              window.__ehWidgetObserver.disconnect();
-              window.__ehWidgetObserver = null;
-            }}
-            doc.querySelectorAll("[" + painted + "]").forEach((node) => {{
-              props.forEach((p) => node.style.removeProperty(p));
-              node.removeAttribute(painted);
-            }});
-            doc.querySelectorAll("[data-eh-bordered]").forEach((node) => {{
-              node.removeAttribute("data-eh-bordered");
-            }});
-          }}
-          function markBorderedCards() {{
-            doc.querySelectorAll("[data-eh-bordered]").forEach((node) => {{
-              node.removeAttribute("data-eh-bordered");
-            }});
-            const candidates = doc.querySelectorAll(
-              '[data-testid="stLayoutWrapper"] > div, [data-testid="stColumn"]'
-            );
-            candidates.forEach((el) => {{
-              const s = window.getComputedStyle(el);
-              const parent = el.parentElement;
-              const inLayout = parent?.getAttribute("data-testid") === "stLayoutWrapper";
-              const hasBorder = parseFloat(s.borderTopWidth) > 0;
-              const hasCardPadding = parseFloat(s.paddingTop) >= 12;
-              if (hasBorder || (inLayout && hasCardPadding)) {{
-                el.setAttribute("data-eh-bordered", "1");
-              }}
-            }});
-          }}
-          function paintEhWidgets() {{
-            if (doc.documentElement.getAttribute("data-eh-theme") !== "light") return;
-            markBorderedCards();
-            doc.querySelectorAll('[data-baseweb="tag"]').forEach((el) => {{
-              el.setAttribute(painted, "1");
-              el.style.setProperty("background-color", pal.tagBg, "important");
-              el.style.setProperty("background", pal.tagBg, "important");
-              el.style.setProperty("color", pal.tagFg, "important");
-              el.style.setProperty("border-color", "rgba(89,110,121,0.35)", "important");
-            }});
-            doc.querySelectorAll('[data-testid="stDownloadButton"] button').forEach((btn) => {{
-              btn.setAttribute(painted, "1");
-              btn.style.setProperty("background-color", pal.btnBg, "important");
-              btn.style.setProperty("color", pal.btnFg, "important");
-              btn.style.setProperty("border-color", pal.boxBorder, "important");
-            }});
-            doc.querySelectorAll(
-              '[data-testid="stMainBlockContainer"] .stButton > button[kind="primary"], [data-testid="stBaseButton-primary"] button'
-            ).forEach((btn) => {{
-              btn.setAttribute(painted, "1");
-              btn.style.setProperty("background-color", pal.primaryBg, "important");
-              btn.style.setProperty("color", pal.primaryFg, "important");
-              btn.style.setProperty("border-color", pal.primaryBg, "important");
-            }});
-            doc.querySelectorAll(
-              'section[data-testid="stSidebar"] [data-testid="stRadio"] label, section[data-testid="stSidebar"] .stRadio label'
-            ).forEach((lbl) => {{
-              lbl.setAttribute(painted, "1");
-              lbl.style.setProperty("color", pal.tagFg, "important");
-              lbl.querySelectorAll("p, span").forEach((n) => {{
-                n.style.setProperty("color", pal.tagFg, "important");
-              }});
-            }});
-            doc.querySelectorAll('[data-testid="stDivider"], [data-testid="stDivider"] hr').forEach((el) => {{
-              el.setAttribute(painted, "1");
-              el.style.setProperty("border", "none", "important");
-              el.style.setProperty("height", "2px", "important");
-              el.style.setProperty("background", pal.boxBorder, "important");
-              el.style.setProperty("opacity", "1", "important");
-            }});
-          }}
-          clearEhPaint();
-          if (theme === "light") {{
-            paintEhWidgets();
-            if (!window.__ehWidgetObserver) {{
-              let t;
-              window.__ehWidgetObserver = new MutationObserver(() => {{
-                clearTimeout(t);
-                t = setTimeout(paintEhWidgets, 60);
-              }});
-              window.__ehWidgetObserver.observe(doc.body, {{ childList: true, subtree: true }});
-            }}
-          }}
-        }})();
-        </script>""",
-        unsafe_allow_javascript=True,
+    """Inject CSS into the main app (works on Streamlit Cloud; no JavaScript required)."""
+    st.markdown(
+        '<style id="eh-dashboard-theme">' + css + "</style>",
+        unsafe_allow_html=True,
     )
 
 
